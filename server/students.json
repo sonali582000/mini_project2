@@ -1,8 +1,6 @@
 [
   {
-    "_id": {
-      "$oid": "616c4b4c649eaa001dd50f85"
-    },
+    "_id": 1,
     "firstName": "Christine",
     "lastName": "Clayton",
     "email": "christine.clayton@example.com",
@@ -12,16 +10,11 @@
     "program": "Web Dev",
     "background": "Computer Engineering",
     "image": "https://i.imgur.com/r8bo8u7.png",
-    "projects": [],
-    "cohort": {
-      "$oid": "616c4b4c649eaa001dd50f81"
-    }
+    "cohort": 1,
+    "projects": []
   },
-
   {
-    "_id": {
-      "$oid": "616c4b4c649eaa001dd50f86"
-    },
+    "_id": 2,
     "firstName": "Grace",
     "lastName": "Green",
     "email": "grace.green@example.com",
@@ -31,15 +24,11 @@
     "program": "Web Dev",
     "background": "Software Development",
     "image": "https://i.imgur.com/r8bo8u7.png",
-    "projects": [],
-    "cohort": {
-      "$oid": "616c4b4c649eaa001dd50f81"
-    }
+    "cohort": 1,
+    "projects": []
   },
   {
-    "_id": {
-      "$oid": "616c4b4c649eaa001dd50f87"
-    },
+    "_id": 3,
     "firstName": "Jack",
     "lastName": "Johnson",
     "email": "jack.johnson@example.com",
@@ -49,15 +38,11 @@
     "program": "Web Dev",
     "background": "System Administration",
     "image": "https://i.imgur.com/r8bo8u7.png",
-    "projects": [],
-    "cohort": {
-      "$oid": "616c4b4c649eaa001dd50f81"
-    }
+    "cohort": 1,
+    "projects": []
   },
   {
-    "_id": {
-      "$oid": "616c4b4c649eaa001dd50f88"
-    },
+    "_id": 4,
     "firstName": "John",
     "lastName": "Doe",
     "email": "john.doe@example.com",
@@ -67,15 +52,11 @@
     "program": "UX/UI",
     "background": "Computer Science",
     "image": "https://i.imgur.com/r8bo8u7.png",
-    "projects": [],
-    "cohort": {
-      "$oid": "616c4b4c649eaa001dd50f82"
-    }
-  },
+    "cohort": 2,
+    "projects": []
+  },  
   {
-    "_id": {
-      "$oid": "616c4b4c649eaa001dd50f89"
-    },
+    "_id": 5,
     "firstName": "Katie",
     "lastName": "King",
     "email": "katie.king@example.com",
@@ -85,15 +66,11 @@
     "program": "UX/UI",
     "background": "Information Systems",
     "image": "https://i.imgur.com/r8bo8u7.png",
-    "projects": [],
-    "cohort": {
-      "$oid": "616c4b4c649eaa001dd50f82"
-    }
+    "cohort": 2,
+    "projects": []
   },
   {
-    "_id": {
-      "$oid": "616c4b4c649eaa001dd50f8a"
-    },
+    "_id": 6,
     "firstName": "Irene",
     "lastName": "Iverson",
     "email": "irene.iverson@example.com",
@@ -103,9 +80,7 @@
     "program": "Data Analytics",
     "background": "Economics",
     "image": "https://i.imgur.com/r8bo8u7.png",
-    "projects": [],
-    "cohort": {
-      "$oid": "616c4b4c649eaa001dd50f83"
-    }
+    "cohort": 3,
+    "projects": []
   }
 ]
