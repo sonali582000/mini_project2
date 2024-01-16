@@ -74,7 +74,7 @@ app.get("/api/students", (req, res) => {
 
 //  GET  /cohorts - Retrieve all cohorts from the database
 app.get("/api/cohorts", (req, res) => {
-  Student.find({})
+  Cohort.find({})
     .then((cohorts) => {
       console.log("Retrieved cohorts ->", cohorts);
       res.json(cohorts);
