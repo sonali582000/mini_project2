@@ -72,6 +72,65 @@ app.get("/api/students", (req, res) => {
     });
 });
 
+//  GET /api/students/:studentId - Retrieves a specific student by id
+app.get("/api/students/:studentId", async (req, res) => {
+  const { studentId } = req.params;
+
+  const student = await Student.findById(studentId);
+  res.json(student);
+});
+/*
+    .then((student) => {
+      if (!student) {
+        return res.status(404).json({ error: "Student not found" });
+      }
+      console.log("Retrived student by ID ", student);
+      res.json(student);
+    })
+    .catch((error) => {
+      console.log("Error while retreiving student by ID", error);
+      res.status(500).send({ error: "failed to retrieve student" });
+    });
+    */
+
+//  PUT /api/students/:studentId - Updates a specific student by id
+app.put("/api/students/:studentId", (req, res) => {
+  const studentId = req.params.studentId;
+  const updatedStudentData = req.body;
+
+  Student.findByIdAndUpdate(studentId, updatedStudentData, { new: true }) //findByIdAndUpdate(id, update, options, callback)
+    .then((updatedStudent) => {
+      if (!updatedStudent) {
+        return res.status(404).json({ error: "student not found" });
+      }
+      console.log("updated student by ID", updatedStudent);
+      res.json(updatedStudent);
+    })
+    .catch((error) => {
+      console.log("Error while updating student data".error);
+      res.status(500).send({ error: "failed to update student" });
+    });
+});
+
+//  DELETE /api/students/:studentId - Deletes a specific student by id
+
+app.delete("/api/students/:studentId", (req, res) => {
+  const studentId = req.params.studentId;
+
+  Student.findByIdAndDelete(studentId)
+    .then((deleteStudent) => {
+      if (!deleteStudent) {
+        return res.status(404).json({ error: "student not found" });
+      }
+      console.log("delete student by ID", deleteStudent);
+      res.json({ message: "student deleted successfully" });
+    })
+    .catch((error) => {
+      console.error("Error while deleting student by ID", error);
+      res.status(500).json({ error: "failed to delete student" });
+    });
+});
+
 //  GET  /cohorts - Retrieve all cohorts from the database
 app.get("/api/cohorts", (req, res) => {
   Cohort.find({})
