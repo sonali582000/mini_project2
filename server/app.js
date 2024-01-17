@@ -84,3 +84,47 @@ app.get("/api/cohorts", (req, res) => {
       res.status(500).send({ error: "Failed to retrieve cohorts" });
     });
 });
+
+// POST /api/students - Creates a new student
+app.post("/api/students", async (req, res) => {
+  const payload = req.body;
+  try {
+    // Create the Student
+    const newStudent = await Student.create(payload);
+    // return the new Student into the response
+    res.status(201).json(newStudent);
+  } catch (error) {
+    console.log(error);
+    if (error.code === 11000) {
+      res.status(400).json({ error, message: "Duplicate somewhere" });
+    } else {
+      res
+        .status(500)
+        .json({ error, message: "Something happened maybe on the server" });
+    }
+  }
+});
+
+// GET /api/students - Retrieves all of the students in the database collection
+app.get("/api/students", (req, res) => {
+  Student.find()
+    .then((allStudents) => {
+      res.status(200).json(allStudents);
+    })
+    .catch((err) => {
+      res.status(500).json({ message: "Error getting all students" });
+    });
+});
+
+//GET /api/students/cohort/:cohortId - Retrieves all of the students for a given cohort
+app.get("/api/students/cohort/:cohortId", (req, res) => {
+  const { cohortId } = req.params;
+  Student.find({ cohort: cohortId })
+    .then((students) => {
+      res.json(students);
+    })
+    .catch((error) => {
+      console.error("Error while retrieving students ->", error);
+      res.status(500).send({ error: "Failed to retrieve students" });
+    });
+});
