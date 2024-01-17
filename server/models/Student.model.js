@@ -14,7 +14,7 @@ const sudentSchema = new Schema({
   image: String,
   project: String,
   cohort: {
-    type: Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
   },
 });
 
