@@ -1,4 +1,4 @@
-const { Schema, model, Types } = require("mongoose");
+const { Schema, model, Types, mongoose } = require("mongoose");
 
 // CREATE SCHEMA
 // Schema - describes and enforces the structure of the documents

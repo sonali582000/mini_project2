@@ -54,6 +54,7 @@ mongoose
 //  GET  /students - Retrieve all students from the database
 app.get("/api/students", (req, res) => {
   Student.find({})
+    .populate("cohort")
     .then((students) => {
       console.log("Retrieved students ->", students);
       res.json(students);
