@@ -116,6 +116,41 @@ app.post("/api/cohorts", async (req, res) => {
   }
 });
 
+app.get("/api/cohorts/:cohortId", async (req, res) => {
+  const { cohortId } = req.params;
+
+  const oneCohort = await Cohort.findById(cohortId);
+  res.json(oneCohort);
+});
+
+app.put("/api/cohorts/:cohortId", async (req, res) => {
+  const payload = req.body;
+
+  try {
+    const updatedCohort = await Cohort.findByIdAndUpdate(
+      req.params.cohortId,
+      payload,
+      { new: true }
+    );
+    res.status(202).json(updatedCohort);
+  } catch (error) {
+    console.log(error);
+    response.status(500).json({ message: "Something bad happened" });
+  }
+});
+
+app.delete("/api/cohorts/:cohortId", async (req, res) => {
+  const { cohortId } = req.params;
+  try {
+    const cohortDel = await Cohort.findByIdAndDelete(cohortId);
+    res
+      .status(202)
+      .json({ message: `${cohortDel.title} was removed from database` });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 // GET /api/students - Retrieves all of the students in the database collection
 app.get("/api/students", (req, res) => {
   Student.find()
