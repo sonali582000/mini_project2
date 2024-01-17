@@ -15,6 +15,7 @@ const sudentSchema = new Schema({
   project: String,
   cohort: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: "Cohort",
   },
 });
 
