@@ -40,14 +40,6 @@ app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
-/*app.get("/api/cohorts", (req, res) => {
-  res.json(cohorts);
-});*/
-
-/*app.get("/api/students", (req, res) => {
-  res.json(students);
-});*/
-
 // START SERVER
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
@@ -99,6 +91,25 @@ app.post("/api/students", async (req, res) => {
       res.status(400).json({ error, message: "Duplicate somewhere" });
     } else {
       res
+        .status(500)
+        .json({ error, message: "Something happened maybe on the server" });
+    }
+  }
+});
+
+app.post("/api/cohorts", async (req, res) => {
+  const payload = req.body;
+  console.log(payload);
+  try {
+    const newCohort = await Cohort.create(payload);
+
+    res.status(201).json(newCohort);
+  } catch (error) {
+    console.log(error);
+    if (error.code === 11000) {
+      response.status(400).json({ error, message: "Duplicate somewhere" });
+    } else {
+      response
         .status(500)
         .json({ error, message: "Something happened maybe on the server" });
     }
