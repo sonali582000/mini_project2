@@ -68,8 +68,7 @@ app.get("/api/students", (req, res) => {
 //  GET /api/students/:studentId - Retrieves a specific student by id
 app.get("/api/students/:studentId", async (req, res) => {
   const { studentId } = req.params;
-
-  const student = await Student.findById(studentId);
+  const student = await Student.findById(studentId).populate("cohort");
   res.json(student);
 });
 /*
@@ -226,6 +225,7 @@ app.get("/api/students", (req, res) => {
 app.get("/api/students/cohort/:cohortId", (req, res) => {
   const { cohortId } = req.params;
   Student.find({ cohort: cohortId })
+    .populate("cohort")
     .then((students) => {
       res.json(students);
     })
