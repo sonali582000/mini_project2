@@ -8,7 +8,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5005", "http://localhost:5173"], 
+    origin: ["http://localhost:5005", "http://localhost:5173"],
   })
 );
 app.use(express.json());
@@ -23,7 +23,6 @@ app.get("/docs", (req, res) => {
 });
 
 // START SERVER
-
 
 //Connect with DataBase
 
@@ -44,15 +43,20 @@ app.get("/api/students", (req, res) => {
 //  GET /api/students/:studentId - Retrieves a specific student by id
 app.get("/api/students/:studentId", async (req, res) => {
   const { studentId } = req.params;
-  const student = await Student.findById(studentId).populate("cohort");
-  res.json(student);
+  try {
+    const student = await Student.findById(studentId).populate("cohort");
+    res.json(student);
+  } catch (error) {
+    console.error("Error while retrieving students ->", error);
+    res.status(500).send({ error: "Failed to retrieve students" });
+  }
 });
 
 //  PUT /api/students/:studentId - Updates a specific student by id
 app.put("/api/students/:studentId", (req, res) => {
   const studentId = req.params.studentId;
   const updatedStudentData = req.body;
-  Student.findByIdAndUpdate(studentId, updatedStudentData, { new: true }) 
+  Student.findByIdAndUpdate(studentId, updatedStudentData, { new: true })
     .then((updatedStudent) => {
       if (!updatedStudent) {
         return res.status(404).json({ error: "student not found" });
@@ -125,9 +129,9 @@ app.post("/api/cohorts", async (req, res) => {
   } catch (error) {
     console.log(error);
     if (error.code === 11000) {
-      response.status(400).json({ error, message: "Duplicate somewhere" });
+      res.status(400).json({ error, message: "Duplicate somewhere" });
     } else {
-      response
+      res
         .status(500)
         .json({ error, message: "Something happened maybe on the server" });
     }
@@ -137,8 +141,14 @@ app.post("/api/cohorts", async (req, res) => {
 //get one Cohort with ID
 app.get("/api/cohorts/:cohortId", async (req, res) => {
   const { cohortId } = req.params;
-  const oneCohort = await Cohort.findById(cohortId);
-  res.json(oneCohort);
+  try {
+    const oneCohort = await Cohort.findById(cohortId);
+    res.json(oneCohort);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error, message: "Something happened maybe on the server" });
+  }
 });
 
 //Update Cohort
@@ -194,4 +204,4 @@ app.get("/api/students/cohort/:cohortId", (req, res) => {
       res.status(500).send({ error: "Failed to retrieve students" });
     });
 });
-module.exports = app
+module.exports = app;
