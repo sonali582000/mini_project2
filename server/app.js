@@ -1,30 +1,14 @@
 const express = require("express");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
-const PORT = 5005;
-
 const cors = require("cors");
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-// STATIC DATA
-// Devs Team - Import the provided files with JSON data of students and cohorts here:
-// ...
-
-//const cohorts = require("./cohorts.json");
-//const students = require("./students.json");
-
 const Student = require("./models/Student.model");
 const Cohort = require("./models/Cohort.model");
-
-// INITIALIZE EXPRESS APP - https://expressjs.com/en/4x/api.html#express
 const app = express();
 
-// MIDDLEWARE
-// Research Team - Set up CORS middleware here:
-// ...
 app.use(
   cors({
-    origin: ["http://localhost:5005", "http://localhost:5173"], // Add the URLs of allowed origins to this array
+    origin: ["http://localhost:5005", "http://localhost:5173"], 
   })
 );
 app.use(express.json());
@@ -33,23 +17,15 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// ROUTES - https://expressjs.com/en/starter/basic-routing.html
-// Devs Team - Start working on the routes here:
-// ...
+//Route to view/docs.html
 app.get("/docs", (req, res) => {
   res.sendFile(__dirname + "/views/docs.html");
 });
 
 // START SERVER
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
 
-//DataBase
-mongoose
-  .connect("mongodb://127.0.0.1:27017/cohort-tools-api")
-  .then((x) => console.log(`Connected to Database: "${x.connections[0].name}"`))
-  .catch((err) => console.error("Error connecting to MongoDB", err));
+
+//Connect with DataBase
 
 //  GET  /students - Retrieve all students from the database
 app.get("/api/students", (req, res) => {
@@ -71,26 +47,12 @@ app.get("/api/students/:studentId", async (req, res) => {
   const student = await Student.findById(studentId).populate("cohort");
   res.json(student);
 });
-/*
-    .then((student) => {
-      if (!student) {
-        return res.status(404).json({ error: "Student not found" });
-      }
-      console.log("Retrived student by ID ", student);
-      res.json(student);
-    })
-    .catch((error) => {
-      console.log("Error while retreiving student by ID", error);
-      res.status(500).send({ error: "failed to retrieve student" });
-    });
-    */
 
 //  PUT /api/students/:studentId - Updates a specific student by id
 app.put("/api/students/:studentId", (req, res) => {
   const studentId = req.params.studentId;
   const updatedStudentData = req.body;
-
-  Student.findByIdAndUpdate(studentId, updatedStudentData, { new: true }) //findByIdAndUpdate(id, update, options, callback)
+  Student.findByIdAndUpdate(studentId, updatedStudentData, { new: true }) 
     .then((updatedStudent) => {
       if (!updatedStudent) {
         return res.status(404).json({ error: "student not found" });
@@ -105,7 +67,6 @@ app.put("/api/students/:studentId", (req, res) => {
 });
 
 //  DELETE /api/students/:studentId - Deletes a specific student by id
-
 app.delete("/api/students/:studentId", (req, res) => {
   const studentId = req.params.studentId;
 
@@ -140,9 +101,7 @@ app.get("/api/cohorts", (req, res) => {
 app.post("/api/students", async (req, res) => {
   const payload = req.body;
   try {
-    // Create the Student
     const newStudent = await Student.create(payload);
-    // return the new Student into the response
     res.status(201).json(newStudent);
   } catch (error) {
     console.log(error);
@@ -156,12 +115,12 @@ app.post("/api/students", async (req, res) => {
   }
 });
 
+//Create new Cohort
 app.post("/api/cohorts", async (req, res) => {
   const payload = req.body;
   console.log(payload);
   try {
     const newCohort = await Cohort.create(payload);
-
     res.status(201).json(newCohort);
   } catch (error) {
     console.log(error);
@@ -175,16 +134,16 @@ app.post("/api/cohorts", async (req, res) => {
   }
 });
 
+//get one Cohort with ID
 app.get("/api/cohorts/:cohortId", async (req, res) => {
   const { cohortId } = req.params;
-
   const oneCohort = await Cohort.findById(cohortId);
   res.json(oneCohort);
 });
 
+//Update Cohort
 app.put("/api/cohorts/:cohortId", async (req, res) => {
   const payload = req.body;
-
   try {
     const updatedCohort = await Cohort.findByIdAndUpdate(
       req.params.cohortId,
@@ -198,6 +157,7 @@ app.put("/api/cohorts/:cohortId", async (req, res) => {
   }
 });
 
+//Delete Cohort from DB
 app.delete("/api/cohorts/:cohortId", async (req, res) => {
   const { cohortId } = req.params;
   try {
@@ -234,3 +194,4 @@ app.get("/api/students/cohort/:cohortId", (req, res) => {
       res.status(500).send({ error: "Failed to retrieve students" });
     });
 });
+module.exports = app
