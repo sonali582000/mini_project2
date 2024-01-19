@@ -12,7 +12,7 @@ router.post("/signup", async (req, res) => {
   const payload = req.body; //get name email password
   const salt = bcrypt.genSaltSync(SALT_ROUNDS);
   const passwordHash = bcrypt.hashSync(payload.passwordHash, salt); //encode the password
-  const passwordHash = bcrypt.hashSync(payload.passwordHash, salt); //encode the password
+  
   const userToRegister = {
     email: payload.email,
     name: payload.name,
