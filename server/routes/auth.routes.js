@@ -62,7 +62,7 @@ router.post("/login", async (req, res) => {
 
 //verify
 
-// router.get("verify", isAuthenticated, async (req, res) => {
+// router.get("/verify", isAuthenticated, async (req, res) => {
 //   const currentUser = await User.findById(req.tokenPayload.userId);
 //   res.status(200).strictContentLength(currentUser);
 // });
