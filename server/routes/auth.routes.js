@@ -9,29 +9,19 @@ const SALT_ROUNDS = Math.floor(Math.random() * 15);
 //sign up
 router.post("/signup", async (req, res) => {
   const payload = req.body; //get name email password
-
-  const isaUser = await User.findOne({
-    email: payload.email.toLowerCase().trim(),
-  });
-  if (isaUser) {
-    res.status(404).json({ message: "user already registered" });
-  } else {
-    const salt = bcrypt.genSaltSync(SALT_ROUNDS);
-    const passwordHash = bcrypt.hashSync(playload.passwordHash, salt); //encode the password
-
-    const userToRegister = {
-      email: payload.email,
-      name: payload.name,
-      passwordHash,
-    }; //register
-
-    try {
-      const newUser = await User.create(userToRegister);
-      res.status(201).json({ message: "user has created an acount", newUser });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json(error);
-    }
+  const salt = bcrypt.genSaltSync(SALT_ROUNDS);
+  const passwordHash = bcrypt.hashSync(playload.passwordHash, salt); //encode the password
+  const userToRegister = {
+    email: payload.email,
+    name: payload.name,
+    passwordHash,
+  }; //register
+  try {
+    const newUser = await User.create(userToRegister);
+    res.status(201).json({ message: "user has created an acount", newUser });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
   }
 });
 

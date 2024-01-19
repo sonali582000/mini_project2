@@ -1,13 +1,16 @@
-const router = require('express').Router()
+const router = require("express").Router();
 // Starting with /api
-router.get('/', (req, res) => {
-  res.json('All good in here')
-})
+router.get("/", (req, res) => {
+  res.json("All good in here");
+});
 
-const studentRouter = require('./student.routes')
-router.use('/student', studentRouter)
+const studentRouter = require("./student.routes");
+router.use("/student", studentRouter);
 
-const cohortRouter = require('./cohort.routes')
-router.use('/cohort', cohortRouter)
+const cohortRouter = require("./cohort.routes");
+router.use("/cohort", cohortRouter);
 
-module.exports = router
+const authRouter = require("./auth.routes");
+router.use("/auth", authRouter);
+
+module.exports = router;
