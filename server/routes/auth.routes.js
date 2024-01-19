@@ -36,15 +36,17 @@ router.post("/login", async (req, res) => {
       // user try to authenticate
       if (bcrypt.compareSync(payload.password, user.passwordHash)) {
         //password match
-        // const authToken = jwt.sign(
-        //   {
-        //     userId: user.id,
-        //   },
-        //   {
-        //     algorithm: "HS256",
-        //     expiresIn: "2h",
-        //   }
-        // );
+        console.log(process.env.TOKEN_SECRET);
+        const authToken = jwt.sign(
+          {
+            userId: user._id,
+          },
+          process.env.TOKEN_SECRET,
+          {
+            algorithm: "HS256",
+            expiresIn: "2h",
+          }
+        );
         res.status(200).json({ token: authToken });
       } else {
         //password not match
