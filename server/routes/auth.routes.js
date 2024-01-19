@@ -1,3 +1,4 @@
+require("dotenv").config();
 const User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
@@ -36,7 +37,7 @@ router.post("/login", async (req, res) => {
       // user try to authenticate
       if (bcrypt.compareSync(payload.password, user.passwordHash)) {
         //password match
-        console.log(process.env.TOKEN_SECRET);
+        console.log(payload);
         const authToken = jwt.sign(
           {
             userId: user._id,
