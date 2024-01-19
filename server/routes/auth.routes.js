@@ -12,6 +12,7 @@ router.post("/signup", async (req, res) => {
   const payload = req.body; //get name email password
   const salt = bcrypt.genSaltSync(SALT_ROUNDS);
   const passwordHash = bcrypt.hashSync(payload.passwordHash, salt); //encode the password
+  const passwordHash = bcrypt.hashSync(payload.passwordHash, salt); //encode the password
   const userToRegister = {
     email: payload.email,
     name: payload.name,
@@ -58,8 +59,8 @@ router.post("/login", async (req, res) => {
       res.status(404).json({ message: "Incorrect password" });
     }
   } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
+    console.log(error); // Log the error for debugging
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
