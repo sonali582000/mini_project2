@@ -2,7 +2,7 @@ require("dotenv").config();
 const User = require("../models/User.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const isAuthenticated = require("../middleware/route-guard.middleware");
+const { isAuthenticated } = require("../middleware/route-guard.middleware");
 
 const router = require("express").Router();
 
@@ -65,9 +65,10 @@ router.post("/login", async (req, res) => {
 
 //verify
 
-// router.get("/verify", isAuthenticated, async (req, res) => {
-//   const currentUser = await User.findById(req.tokenPayload.userId);
-//   res.status(200).strictContentLength(currentUser);
-// });
+router.get("/verify", isAuthenticated, async (req, res) => {
+  console.log(req.tokenPayload);
+  const currentUser = await User.findById(req.tokenPayload.userId);
+  res.status(200).json(currentUser);
+});
 
 module.exports = router;
