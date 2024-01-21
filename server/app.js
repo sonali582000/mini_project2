@@ -1,12 +1,40 @@
 const express = require("express");
 const app = express();
+require("dotenv").config();
+const morgan = require("morgan");
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
 
-require("./config")(app);
-app.get("/docs", (req, res) => {
-  res.sendFile(__dirname + "/views/docs.html");
-});
-const indexRoutes = require("./routes/index.routes");
-app.use("/api", indexRoutes);
+const Port = process.env.PORT;
 
-require("./error-handling")(app);
+app.use(express.json());
+app.use(morgan("dev"));
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: false }));
+app.use(cors());
+app.use(cookieParser());
+
+const {
+  errorHandler,
+  notFoundHandler,
+} = require("./middleware/error-handling");
+
+const allRoutes = require("./routes");
+app.use(allRoutes);
+
+const docsRoute = require("./routes/docs.routes");
+app.use("/docs", docsRoute);
+
+const studentRoute = require("./routes/student.routes");
+app.use("/api", studentRoute);
+
+const cohortRoute = require("./routes/cohort.routes");
+app.use("/api", cohortRoute);
+
+const authRoute = require("./routes/auth.routes");
+app.use("/auth", authRoute);
+
+app.use(errorHandler);
+app.use(notFoundHandler);
+
 module.exports = app;

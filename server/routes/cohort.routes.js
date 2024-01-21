@@ -2,20 +2,17 @@ const Cohort = require("../models/Cohort.model");
 const router = require("express").Router();
 
 //  GET  /cohorts - Retrieve all cohorts from the database
-router.get("/", (req, res) => {
-  Cohort.find({})
-    .then((cohorts) => {
-      console.log("Retrieved cohorts ->", cohorts);
-      res.json(cohorts);
-    })
-    .catch((error) => {
-      console.error("Error while retrieving cohorts ->", error);
-      res.status(500).send({ error: "Failed to retrieve cohorts" });
-    });
+router.get("/cohorts", async (req, res, next) => {
+  try {
+    const cohorts = await Cohort.find();
+    res.status(200).json(cohorts);
+  } catch (error) {
+    next(error);
+  }
 });
 
 //Create new Cohort
-router.post("/", async (req, res) => {
+router.post("/cohorts", async (req, res, next) => {
   const payload = req.body;
   console.log(payload);
   try {
@@ -23,25 +20,19 @@ router.post("/", async (req, res) => {
     res.status(201).json(newCohort);
   } catch (error) {
     console.log(error);
-    if (error.code === 11000) {
-      response.status(400).json({ error, message: "Duplicate somewhere" });
-    } else {
-      response
-        .status(500)
-        .json({ error, message: "Something happened maybe on the server" });
-    }
+    next(error);
   }
 });
 
 //get one Cohort with ID
-router.get("/:cohortId", async (req, res) => {
+router.get("/cohorts/:cohortId", async (req, res) => {
   const { cohortId } = req.params;
   const oneCohort = await Cohort.findById(cohortId);
   res.json(oneCohort);
 });
 
 //Update Cohort
-router.put("/:cohortId", async (req, res) => {
+router.put("/cohorts/:cohortId", async (req, res, next) => {
   const payload = req.body;
   try {
     const updatedCohort = await Cohort.findByIdAndUpdate(
@@ -52,12 +43,12 @@ router.put("/:cohortId", async (req, res) => {
     res.status(202).json(updatedCohort);
   } catch (error) {
     console.log(error);
-    response.status(500).json({ message: "Something bad happened" });
+    next(error);
   }
 });
 
 //Delete Cohort from DB
-router.delete("/:cohortId", async (req, res) => {
+router.delete("/cohorts/:cohortId", async (req, res, next) => {
   const { cohortId } = req.params;
   try {
     const cohortDel = await Cohort.findByIdAndDelete(cohortId);
@@ -66,6 +57,7 @@ router.delete("/:cohortId", async (req, res) => {
       .json({ message: `${cohortDel.title} was removed from database` });
   } catch (error) {
     console.log(error);
+    next(error);
   }
 });
 module.exports = router;
