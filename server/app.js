@@ -19,6 +19,11 @@ const {
   notFoundHandler,
 } = require("./middleware/error-handling");
 
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://example.com"], // Add the URLs of allowed origins to this array
+  })
+);
 const allRoutes = require("./routes");
 app.use(allRoutes);
 
