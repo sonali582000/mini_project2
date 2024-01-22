@@ -9,7 +9,7 @@ const userSchema = new Schema(
       trim: true,
       lowercase: true,
     },
-    passwordHash: {
+    password: {
       type: String,
       required: true,
     },
@@ -24,4 +24,3 @@ const userSchema = new Schema(
 const User = model("User", userSchema);
 
 module.exports = User;
-

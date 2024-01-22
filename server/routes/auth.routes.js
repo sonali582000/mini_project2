@@ -6,17 +6,17 @@ const { isAuthenticated } = require("../middleware/route-guard.middleware");
 
 const router = require("express").Router();
 
-const SALT_ROUNDS = Math.floor(Math.random() * 15);
+const SALT_ROUNDS = 13;
 //sign up
 router.post("/signup", async (req, res) => {
   const payload = req.body; //get name email password
   const salt = bcrypt.genSaltSync(SALT_ROUNDS);
-  const passwordHash = bcrypt.hashSync(payload.passwordHash, salt); //encode the password
-  
+  const password = bcrypt.hashSync(payload.password, salt); //encode the password
+
   const userToRegister = {
     email: payload.email,
     name: payload.name,
-    passwordHash,
+    password,
   }; //register
   try {
     const newUser = await User.create(userToRegister);
@@ -36,7 +36,7 @@ router.post("/login", async (req, res) => {
     });
     if (user) {
       // user try to authenticate
-      if (bcrypt.compareSync(payload.password, user.passwordHash)) {
+      if (bcrypt.compareSync(payload.password, user.password)) {
         //password match
         console.log(payload);
         const authToken = jwt.sign(
@@ -46,10 +46,10 @@ router.post("/login", async (req, res) => {
           process.env.TOKEN_SECRET,
           {
             algorithm: "HS256",
-            expiresIn: "2h",
+            expiresIn: "6h",
           }
         );
-        res.status(200).json({ token: authToken });
+        res.status(200).json({ authToken: authToken });
       } else {
         //password not match
         res.status(403).json({ message: "Incorrect password" });
