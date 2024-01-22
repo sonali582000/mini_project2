@@ -7,7 +7,7 @@ const AuthContext = React.createContext();
 
 function AuthProviderWrapper(props) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
   const [authError, setAuthError] = useState(null);
 
